@@ -1,4 +1,4 @@
-# Week 3 Example 2: Full Fighting Game
+# Week 3 Side Quest
 
 ## Setup and Interaction Instructions
 
