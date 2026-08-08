@@ -12,7 +12,7 @@
 // ------------------------------------------------------------
 const STATE_START = "start";
 const STATE_FIGHT = "fight";
-const STATE_WIN   = "win";
+const STATE_WIN = "win";
 
 let gameState = STATE_START;
 let winner = null; // stores "P1" or "P2" when the game ends
@@ -20,10 +20,9 @@ let winner = null; // stores "P1" or "P2" when the game ends
 // ------------------------------------------------------------
 // SOUNDS
 // Loaded in preload() so they are ready before the game starts.
-// punchSounds is an array — a random one plays on each hit
-// so punches don't sound identical every time.
+// punchSound plays on each hit using the single energypunch asset.
 // ------------------------------------------------------------
-let punchSounds = [];
+let punchSound;
 let winSound;
 let bgMusic;
 
@@ -64,10 +63,10 @@ class Fighter {
     // Attack state
     this.isAttacking = false;
     this.attackTimer = 0;
-    this.attackDuration = 18;  // frames the punch stays active
-    this.attackCooldown = 0;   // frames until this fighter can attack again
-    this.punchReach = 55;      // how far the fist extends in pixels
-    this.punchDir = 1;         // direction of punch: 1 = right, -1 = left
+    this.attackDuration = 18; // frames the punch stays active
+    this.attackCooldown = 0; // frames until this fighter can attack again
+    this.punchReach = 55; // how far the fist extends in pixels
+    this.punchDir = 1; // direction of punch: 1 = right, -1 = left
 
     // Block state
     this.isBlocking = false;
@@ -114,7 +113,7 @@ class Fighter {
   // this gives smooth continuous movement.
   // ----------------------------------------------------------
   handleInput() {
-    if (keyIsDown(this.controls.left))  this.vx -= this.speed;
+    if (keyIsDown(this.controls.left)) this.vx -= this.speed;
     if (keyIsDown(this.controls.right)) this.vx += this.speed;
 
     // Clamp speed — prevents infinite acceleration
@@ -158,9 +157,8 @@ class Fighter {
     // Punch extends toward the opponent
     this.punchDir = targetX > this.x ? 1 : -1;
 
-    // Pick a random punch sound from the array for variety
-    let randomPunch = punchSounds[floor(random(punchSounds.length))];
-    randomPunch.play();
+    // Play the single energy punch sound effect
+    punchSound.play();
   }
 
   // ----------------------------------------------------------
@@ -248,6 +246,8 @@ class Fighter {
 // ============================================================
 let fighter1, fighter2;
 let groundY;
+let portalImage;
+let backgroundImage;
 
 // ============================================================
 // preload()
@@ -255,13 +255,13 @@ let groundY;
 // ready before the game starts.
 // ============================================================
 function preload() {
-  // Load all 9 punch sounds into an array
-  // A random one will be picked each time a punch lands
-  for (let i = 1; i <= 9; i++) {
-    punchSounds.push(loadSound("assets/sounds/punch_" + i + ".wav"));
-  }
-  winSound = loadSound("assets/sounds/win.wav");
-  bgMusic  = loadSound("assets/sounds/background.mp3");
+  portalImage = loadImage("assets/images/portal.jpg");
+  backgroundImage = loadImage("assets/images/background.jpg");
+
+  // Load the single punch sound effect asset
+  punchSound = loadSound("assets/sounds/energypunch.mp3");
+  winSound = loadSound("assets/sounds/victory.mp3");
+  bgMusic = loadSound("assets/sounds/new_background.mp3");
 }
 
 // ============================================================
@@ -366,6 +366,8 @@ function endGame(winnerLabel) {
 // Displayed before the game begins.
 // ------------------------------------------------------------
 function drawStartScreen() {
+  image(portalImage, 0, 0, width, height);
+
   // Title
   fill(255);
   textAlign(CENTER);
@@ -414,9 +416,11 @@ function drawWinScreen() {
 
 // ------------------------------------------------------------
 // drawArena()
-// Draws the ground plane and dividing line.
+// Draws the background image and ground plane/dividing line.
 // ------------------------------------------------------------
 function drawArena() {
+  image(backgroundImage, 0, 0, width, height);
+
   fill(40);
   noStroke();
   rect(0, groundY, width, height - groundY);
@@ -473,9 +477,9 @@ function checkHits() {
 // map() converts health (0–3) to bar width in pixels.
 // ------------------------------------------------------------
 function drawHealthBars() {
-  let barW    = 200;
-  let barH    = 18;
-  let barY    = 45;
+  let barW = 200;
+  let barH = 18;
+  let barY = 45;
   let padding = 30;
 
   // Player 1 health bar — left side, fills left to right

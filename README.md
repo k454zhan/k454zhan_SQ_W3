@@ -7,8 +7,8 @@
 This example builds on Example 1 by adding health, attacking, hit detection, sound, and game states to create a complete two-player fighting game.
 
 - **Game states** — the game is always in one of three states (`STATE_START`, `STATE_FIGHT`, `STATE_WIN`); each state controls what gets drawn and what responds to input; stored as constants to prevent typos
-- **`preload()`** — loads all sounds before the sketch starts so they are ready to play immediately; sound files are loaded into an array for variety
-- **Sound array** — `punchSounds` holds all 9 punch sounds; `floor(random(...))` picks a random index each time a punch lands so hits sound different
+- **`preload()`** — loads all sounds before the sketch starts so they are ready to play immediately; there is one punch effect used for every hit
+- **Punch sound** — `punchSound` loads the single energy punch asset and plays it each time a fighter attacks
 - **Health system** — each fighter has a `health` property that decreases when hit; `maxHealth` is stored separately so health bars can be drawn proportionally using `map()`
 - **`startAttack()`** — called from `keyPressed()` so the punch fires once per press; sets the direction of the fist based on the opponent's position
 - **`getPunchX()`** — a method that returns the fist's x position; used in `checkHits()` to test whether the punch connects with the opponent
@@ -25,9 +25,9 @@ To run the sketch locally, open `index.html` in Google Chrome using Live Server.
 
 Sound files must be present in `assets/sounds/` before running:
 
-- `punch_1.wav` through `punch_9.wav`
-- `win.wav`
-- `background.mp3`
+- `energypunch.mp3`
+- `victory.mp3`
+- `new_background.mp3`
 
 **Player 1 Controls:**
 
@@ -52,16 +52,16 @@ The console will show any errors in your sketch.
 
 ## Assets
 
-| File                                        | Source                                            |
-| ------------------------------------------- | ------------------------------------------------- |
-| `assets/sounds/punch_1.wav` – `punch_9.wav` | Punch SFX — OpenGameArt.org                       |
-| `assets/sounds/win.wav`                     | listener4me, Win Sound Effect — OpenGameArt.org   |
-| `assets/sounds/background.mp3`              | Matthew Pablo, Space Dimensions — OpenGameArt.org |
+| File                               | Source                                            |
+| ---------------------------------- | ------------------------------------------------- |
+| `assets/sounds/energypunch.mp3`    | Energy punch sound effect — OpenGameArt.org       |
+| `assets/sounds/victory.mp3`        | Victory tune — Pixabay                            |
+| `assets/sounds/new_background.mp3` | Matthew Pablo, Space Dimensions — OpenGameArt.org |
 
 ## References
 
-listener4me. n.d. _Win Sound Effect_. OpenGameArt.org. Retrieved May 1, 2026, from https://opengameart.org/content/win-sound-effect
+[1] Hemz. n.d. A Yellow Round Light and Light [Photograph]. Pexels. Retrieved August 7, 2026 from https://www.pexels.com/photo/a-yellow-round-light-and-light-10187003/
 
-Pablo, Matthew. n.d. _Space Dimensions (Techno Version)_. OpenGameArt.org. Retrieved May 1, 2026, from https://opengameart.org/content/space-dimensions-techno-version
+[2] Alex_Jauk. 2024. Victory Tune [Sound Effect]. Pixabay. Retrieved August 7, 2026 from https://pixabay.com/sound-effects/musical-victory-tune-185252/
 
-Punch SFX. n.d. OpenGameArt.org. Retrieved May 1, 2026, from https://opengameart.org/content/punch-sfx
+[3] Yodguard. 2026. Short Energy Beam Shot (4) [Sound Effect]. Pixabay. Retrieved August 7, 2026 from https://pixabay.com/sound-effects/film-special-effects-short-energy-beam-shot-4-482500/
